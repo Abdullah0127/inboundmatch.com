@@ -1,0 +1,15 @@
+import {useEffect} from 'react'
+import {AnimatePresence,motion} from 'motion/react'
+import {Route,Routes,useLocation} from 'react-router-dom'
+import {Navbar} from './Navbar.jsx'
+import {Footer} from './Footer.jsx'
+import {QuickContact} from '../common/QuickContact.jsx'
+import {Home} from '../../pages/Home.jsx'
+import {About} from '../../pages/About.jsx'
+import {Services} from '../../pages/Services.jsx'
+import {Contact} from '../../pages/Contact.jsx'
+import {Partners} from '../../pages/Partners.jsx'
+import {Legal} from '../../pages/Legal.jsx'
+import {PageHero} from '../common/ui.jsx'
+
+export function SiteLayout(){const loc=useLocation();useEffect(()=>{const labels={'/':'Motor Vehicle Claim | Claim with confidence','/about':'About | Motor Vehicle Claim','/services':'Services | Motor Vehicle Claim','/contact':'Contact | Motor Vehicle Claim','/partners':'Partners | Motor Vehicle Claim','/terms':'Terms | Motor Vehicle Claim','/privacy':'Privacy | Motor Vehicle Claim'};document.title=labels[loc.pathname]||'Page not found | Motor Vehicle Claim'},[loc.pathname]);return <><Navbar/><AnimatePresence mode="wait"><motion.main key={loc.pathname} initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}} transition={{duration:.18}}><Routes><Route path="/" element={<Home/>}/><Route path="/about" element={<About/>}/><Route path="/services" element={<Services/>}/><Route path="/contact" element={<Contact/>}/><Route path="/partners" element={<Partners/>}/><Route path="/terms" element={<Legal/>}/><Route path="/privacy" element={<Legal privacy/>}/><Route path="*" element={<PageHero label="404" title={<>This page took<br/><em>a wrong turn.</em></>} text="The page you?re looking for may have moved or no longer exists."/>}/></Routes></motion.main></AnimatePresence><QuickContact/><Footer/></>}
