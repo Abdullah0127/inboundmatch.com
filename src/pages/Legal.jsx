@@ -1,4 +1,98 @@
-import {Eyebrow,PageHero} from '../components/common/ui.jsx'
-import {terms,privacy} from '../data/siteData.js'
 
-export function Legal({privacy:policy=false}){const sections=policy?privacy:terms;return <><PageHero label="LEGAL INFORMATION" title={policy?<>Privacy<br/><em>policy.</em></>:<>Terms &amp;<br/><em>conditions.</em></>} text={policy?'How information may be collected and used when you visit our website or contact us.':'Please read these terms carefully before using our website or submitting an enquiry.'}/><section className="section legal-section"><div className="wrap legal-layout"><aside><Eyebrow>ON THIS PAGE</Eyebrow><nav>{sections.map((s,i)=><a href={'#legal-'+i} key={s}>{s}</a>)}</nav><small>Draft content. Confirm current policy before publication.</small></aside><article><p className="legal-note">This page is a structural draft, not verified legal copy. The reference site was unavailable during preparation. Replace this draft with the current approved policy before publication.</p>{sections.map((s,i)=><section id={'legal-'+i} key={s}><span>0{i+1}</span><h2>{s}</h2><p>{policy?'We handle information in accordance with the details provided when you contact us and applicable privacy requirements. Contact us with questions about information connected with your enquiry.':'Use of this website and any claim assistance is subject to terms communicated by Motor Vehicle Claim and any relevant legal partner. Contact us for information about your enquiry.'}</p></section>)}</article></div></section></>}
+import { Eyebrow, PageHero } from "../components/common/ui.jsx";
+import { terms, privacy } from "../data/siteData.js";
+
+export function Legal({ privacy: isPrivacy = false }) {
+  const document = isPrivacy ? privacy?.[0] : terms?.[0];
+
+  if (!document) {
+    return <p>Legal content is not available.</p>;
+  }
+
+  const sections = document.sections ?? [];
+  const pageTitle = isPrivacy ? "Privacy Policy" : "Terms & Conditions";
+
+  return (
+    <>
+      <PageHero
+        label="INBOUNDMATCH · LEGAL INFORMATION"
+        title={
+          isPrivacy ? (
+            <>
+              Privacy
+              <br />
+              <em>policy.</em>
+            </>
+          ) : (
+            <>
+              Terms &
+              <br />
+              <em>conditions.</em>
+            </>
+          )
+        }
+        text={document.intro}
+      />
+
+      <section className="section legal-section">
+        <div className="wrap legal-layout">
+          <aside className="legal-sidebar">
+            <Eyebrow>ON THIS PAGE</Eyebrow>
+
+            <nav aria-label={`${pageTitle} navigation`}>
+              {sections.map((section, index) => (
+                <a href={`#legal-${index}`} key={section.title}>
+                  {section.title}
+                </a>
+              ))}
+            </nav>
+
+            <small>
+              Please review this page periodically for updates.
+            </small>
+          </aside>
+
+          <article className="legal-content">
+            {sections.map((section, index) => (
+              <section
+                className="legal-content-section"
+                id={`legal-${index}`}
+                key={section.title}
+              >
+                <span className="legal-number">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+
+                <h2>{section.title}</h2>
+
+                {/* Render privacy labels as headings to match Terms subsections */}
+                {section.paragraphs?.map((paragraph, paragraphIndex) =>
+                  paragraph.label ? (
+                    <div className="legal-subsection" key={paragraphIndex}>
+                      <h3>{paragraph.label}</h3>
+                      <p>{paragraph.content}</p>
+                    </div>
+                  ) : (
+                    <p key={paragraphIndex}>
+                      {paragraph.content ?? paragraph}
+                    </p>
+                  ),
+                )}
+                {/* Render subsections, used by Terms & Conditions */}
+                {section.subsections?.map((subsection) => (
+                  <div className="legal-subsection" key={subsection.title}>
+                    <h3>{subsection.title}</h3>
+
+                    {subsection.paragraphs?.map((paragraph, paragraphIndex) => (
+                      <p key={paragraphIndex}>{paragraph}</p>
+                    ))}
+                  </div>
+                ))}
+              </section>
+            ))}
+          </article>
+        </div>
+      </section>
+    </>
+  );
+}

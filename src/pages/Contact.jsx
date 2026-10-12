@@ -1,6 +1,86 @@
-import {useState} from 'react'
-import {ArrowUpRight,ArrowRight,Mail,Phone} from 'lucide-react'
-import {Eyebrow,PageHero,Field} from '../components/common/ui.jsx'
-import {email,phone} from '../data/siteData.js'
+import { useState } from "react";
+import { ArrowUpRight, ArrowRight, Mail, Phone } from "lucide-react";
+import { Eyebrow, PageHero, Field } from "../components/common/ui.jsx";
+import { email, phone } from "../data/siteData.js";
 
-export function Contact(){const [sent,setSent]=useState(false);return <><PageHero label="CONTACT" title={<>Get in touch for<br/><em>free claim advice.</em></>} text="Tell us what's on your mind. Our team is here to answer your questions and help you understand a possible next step."/><section className="section contact-section"><div className="wrap contact-grid"><div className="contact-info"><Eyebrow>WE'RE HERE TO HELP</Eyebrow><h2>Start a conversation.</h2><p>Choose what works best for you. We will make the next step clear.</p><a href={'mailto:'+email}><span><Mail/></span><div><small>EMAIL</small><strong>{email}</strong></div><ArrowUpRight/></a><a href="tel:+18442282372"><span><Phone/></span><div><small>CALL US</small><strong>{phone}</strong></div><ArrowUpRight/></a></div><form className="contact-form" onSubmit={e=>{e.preventDefault();setSent(true)}}><h3>{sent?'Thanks for your message.':'Send us a message'}</h3><p>{sent?'This demo form does not send data. Connect an API endpoint to receive messages.':'We will respond to your enquiry as soon as we can.'}</p>{!sent&&<><Field label="Full name" name="name" required/><Field label="Email address" name="email" type="email" required/><label className="field">Message<textarea name="message" rows="5" required/></label><button className="button">Send message <ArrowRight/></button></>}</form></div></section></>}
+export function Contact() {
+  const [sent, setSent] = useState(false);
+  return (
+    <>
+      <PageHero
+        label="CONTACT"
+        title={
+          <>
+            Get in touch for
+            <br />
+            <em>free claim advice.</em>
+          </>
+        }
+        text="Tell us what's on your mind. Our team is here to answer your questions and help you understand a possible next step."
+      />
+      <section className="section contact-section">
+        <div className="wrap contact-grid">
+          <div className="contact-info">
+            <Eyebrow>WE'RE HERE TO HELP</Eyebrow>
+            <h2>Start a conversation.</h2>
+            <p>
+              Choose what works best for you. We will make the next step clear.
+            </p>
+            <a href={"mailto:" + email}>
+              <span>
+                <Mail />
+              </span>
+              <div>
+                <small>EMAIL</small>
+                <strong>{email}</strong>
+              </div>
+              <ArrowUpRight />
+            </a>
+            <a href="tel:+447737139740">
+              <span>
+                <Phone />
+              </span>
+              <div>
+                <small>CALL US</small>
+                <strong>{phone}</strong>
+              </div>
+              <ArrowUpRight />
+            </a>
+          </div>
+          <form
+            className="contact-form"
+            onSubmit={(e) => {
+              e.preventDefault();
+              setSent(true);
+            }}
+          >
+            <h3>{sent ? "Thanks for your message." : "Send us a message"}</h3>
+            <p>
+              {sent
+                ? "This demo form does not send data. Connect an API endpoint to receive messages."
+                : "We will respond to your enquiry as soon as we can."}
+            </p>
+            {!sent && (
+              <>
+                <Field label="Full name" name="name" required />
+                <Field
+                  label="Email address"
+                  name="email"
+                  type="email"
+                  required
+                />
+                <label className="field">
+                  Message
+                  <textarea name="message" rows="5" required />
+                </label>
+                <button className="button">
+                  Send message <ArrowRight />
+                </button>
+              </>
+            )}
+          </form>
+        </div>
+      </section>
+    </>
+  );
+}
